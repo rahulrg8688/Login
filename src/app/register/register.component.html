@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row">
+        <div class="card">
+        <div class="card-header bg-primary">
+            <h1>Register</h1>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="UserDetails">
+                <div class="m-2">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" formControlName="username" id="username" class="form-control">
+                </div>
+                
+                <div class="m-2">
+                    <label for="Password" class="form-label">Password</label>
+                    <input [type]="passwordType" id="Password" formControlName="password" class="form-control">
+                    <i class="bi bi-eye" (click)="togglePassword()" id="togglePassword"></i>
+                    
+                    
+                </div>
+                
+                <div class="m-3">
+                    <label for="Roles" class="form-label">Role</label>
+                    <select class="form-select" id="Roles" formControlName="Role">
+                        <option selected>Open this select menu</option>
+                        <option value="USER">User</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
+                </div>
+                
+                <div class="m-3">
+                    <div formArrayName="city">
+                        <div *ngFor="let item of UserDetails.controls.city.controls;let i=index">
+                            <label for="city" class="form-label">Enter location</label>
+                            <select class="form-select" id="city" [formControlName]="i">
+                                <option selected>Open this select menu</option>
+                                <option *ngFor="let data of locationdropdown;let i=index" [value]="data.locationId">{{data.locationName}}</option>
+                                
+                            </select>
+                            <button (click)="removeItem(i)">-</button>  
+                        </div>
+                    </div>
+                    <button (click)="addItem()">+</button>
+                    
+                </div>
+                <button class="btn btn-primary" (click)="submit()">Register</button>
+                <h1 [ngClass]="clr">{{RetResponseMsg}}</h1>
+                <a routerLink="/login">Login</a>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+

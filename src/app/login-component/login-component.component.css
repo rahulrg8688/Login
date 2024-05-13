@@ -1,0 +1,15 @@
+.red{
+    color:red;
+    font-weight: bold;
+}
+.green{
+    color:green;
+    font-weight: bold;
+}
+.bi-eye {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }

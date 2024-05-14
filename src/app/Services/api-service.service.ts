@@ -20,4 +20,7 @@ export class APiServiceService {
   Register(data:any){
     return this.Http.post(this.Api+"Register",data);
   }
+  duplicatename(data:any){
+    return this.Http.get(this.Api+`GetDuplicate?username=${data}`);
+  }
 }

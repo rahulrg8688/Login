@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,FormArray, Validators, FormControl, Form } from '@angular/forms';
 import { APiServiceService } from '../Services/api-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -11,16 +12,22 @@ export class RegisterComponent implements OnInit {
 
   passwordType:any;
   RetResponseMsg:any;
+  Errusername:any;
   clr:any;
+  IsSubmit:any=false;
+  ButtonText:any=false;
   locationdropdown:any;
-  constructor(public fb:FormBuilder,public ApiService:APiServiceService){}
+  constructor(public fb:FormBuilder,public ApiService:APiServiceService,public route:Router){}
   UserDetails:any=this.fb.group({
     username:['',Validators.required],
     password:['',Validators.required],
-    
     Role:['',Validators.required],
     city:this.fb.array([this.createCity()])
     })
+
+    get user() {
+      return this.UserDetails.controls;
+    }
 
     createCity():FormControl{
       return this.fb.control('',Validators.required);
@@ -52,9 +59,27 @@ export class RegisterComponent implements OnInit {
       }
     
     }
+    FindDupName(name:any){
+      
+      this.ApiService.duplicatename(name.value).subscribe((res:any)=>{
+        console.log(res);
+       this.Errusername=res.message;
+       if(res.status==0){
+        this.clr={red:true,green:false}
+       }
+     
+      })
+    
+    }
 
     submit(){
-      console.log(this.UserDetails.value);
+      this.RetResponseMsg='';
+      console.log(this.UserDetails.valid);
+          this.IsSubmit=true;
+        
+      if(this.UserDetails.valid){
+        this.ButtonText=true;
+        console.log(this.UserDetails.value);
       const data={
         username:this.UserDetails.value.username,
         password:this.UserDetails.value.password,
@@ -64,8 +89,29 @@ export class RegisterComponent implements OnInit {
 
       }
       console.log(data);
-      this.ApiService.Register(data).subscribe((res:any)=>{
-        console.log(res);
-      })
+      setTimeout(()=>{
+        this.ApiService.Register(data).subscribe((res:any)=>{
+          console.log(res);
+  
+          setTimeout(()=>{
+            this.RetResponseMsg=res.message;
+         
+          },2000)
+          if(res.status==0){
+            this.clr={green:false,red:true};
+          }
+          else{
+                    this.clr={red:false,green:true};
+                    this.route.navigate(['/login']);                  
+          }
+          
+          this.ButtonText=false;
+          
+        })
+        
+      },4000);
+      
     }
-}
+    
+    
+  }}

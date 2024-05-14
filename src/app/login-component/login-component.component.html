@@ -8,39 +8,46 @@
             <form [formGroup]="UserDetails">
                 <div class="m-2">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" formControlName="username" id="username" class="form-control">
+                    <input type="text" formControlName="username" [ngClass]="{'error':IsSubmit && user.username.invalid}" id="username" class="form-control">
+                    <span  *ngIf="user.username.invalid && IsSubmit"
+                    class="text-danger ">Required*</span>
                 </div>
                 
                 <div class="m-2">
                     <label for="Password" class="form-label">Password</label>
-                    <input [type]="passwordType" id="Password" formControlName="password" class="form-control">
+                    <input [type]="passwordType" id="Password" formControlName="password" [ngClass]="{'error':IsSubmit && user.username.invalid}" class="form-control">
                     <i class="bi bi-eye" (click)="togglePassword()" id="togglePassword"></i>
-                    
+                    <span  *ngIf="user.password.invalid && IsSubmit"
+                    class="text-danger ">Required*</span>
                     
                 </div>
                 
                 <div class="m-3">
                     <label for="Roles" class="form-label">Role</label>
-                    <select class="form-select" id="Roles" formControlName="Role">
+                    <select class="form-select" id="Roles" formControlName="Role" [ngClass]="{'error':IsSubmit && user.Role.invalid}">
                         <option selected>Open this select menu</option>
                         <option value="USER">User</option>
                         <option value="ADMIN">Admin</option>
                     </select>
+                    <span  *ngIf="user.Role.invalid && IsSubmit"
+                    class="text-danger ">Required*</span>
                 </div>
                 
                 <div class="m-3">
                     <label for="city" class="form-label">Enter location</label>
-                    <select class="form-select" id="city" formControlName="cities">
+                    <select class="form-select" id="city" formControlName="cities" [ngClass]="{'error':IsSubmit && user.cities.invalid}">
                         <option selected>Open this select menu</option>
                         <option *ngFor="let data of locationdropdown;let i=index" [value]="data.locationId">{{data.locationName}}</option>
                     
                     </select>
+                    <span  *ngIf="user.cities.invalid && IsSubmit"
+                    class="text-danger ">Required*</span>
                 </div>
-                <button class="btn btn-primary" (click)="submit()">Login</button>
+                <button class="btn btn-primary" (click)="submit()"> {{ButtonText?'Loading....':'Login'}}</button>
                 <h1 [ngClass]="clr">{{RetResponseMsg}}</h1>
+            <a routerLink="/">Register</a>
             </form>
         </div>
         </div>
     </div>
 </div>
-<button class="btn btn-primary">Login</button>
